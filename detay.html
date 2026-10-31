@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Galaxy Explorer | Kozmik Arşiv</title>
+    <link rel="stylesheet" href="style.css">
+    <style>
+      html, body { max-width: 100%; overflow-x: hidden; }
+      .detail-container { width: min(1100px, calc(100% - 36px)); margin-left: auto; margin-right: auto; box-sizing: border-box; }
+      .category-overview { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); min-width: 0; }
+      .category-overview > *, .object-grid, .object-card { min-width: 0; }
+      .category-overview img, .object-card img, .object-detail img { display: block; max-width: 100%; }
+      .object-grid { grid-template-columns: repeat(auto-fit, minmax(min(260px, 100%), 1fr)); }
+      @media (max-width: 750px) { .category-overview { grid-template-columns: 1fr; } }
+    </style>
+</head>
+
+<body>
+
+    <canvas id="spaceCanvas"></canvas>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">
+            GALAXY<span>EXPLORER</span>
+        </a>
+
+        <div class="nav-links">
+            <a href="index.html">Ana Sayfa</a>
+            <a href="index.html#discover">Keşfet</a>
+        </div>
+    </nav>
+
+    <main class="detail-container">
+
+        <p class="eyebrow">GALACTIC DATABASE</p>
+
+        <h1 id="categoryTitle">Yükleniyor...</h1>
+
+        <p id="categoryDescription"></p>
+
+        <section class="category-overview">
+
+            <div>
+                <p class="eyebrow">GENEL BİLGİ</p>
+                <h2 id="overviewTitle"></h2>
+                <p id="overviewText"></p>
+            </div>
+
+            <img id="overviewImage" src="" alt="Kategoriye ait uzay görseli">
+
+        </section>
+
+        <p class="eyebrow">KOZMİK NESNELER</p>
+        <h2 style="font-size:32px; margin:15px 0 30px;">
+            Keşfedilecek Cisimler
+        </h2>
+
+        <div class="object-grid" id="objectGrid"></div>
+        <p class="image-note" style="color:#aaa; font-size:13px; margin-top:14px;">Not: Bazı uzak cisimlerde doğrudan fotoğraf bulunmadığından bilimsel sanatçı çizimleri kullanılır.</p>
+
+        <div class="object-detail" id="objectDetail">
+
+            <h2 id="objectTitle"></h2>
+
+            <img id="objectImage" src="" alt="Seçilen gök cismi">
+
+            <p id="objectDescription"></p>
+
+            <button id="closeDetail">Kapat ×</button>
+
+        </div>
+
+        <a href="index.html#discover" class="back-button">
+            ← Kozmik Arşive Dön
+        </a>
+
+    </main>
+
+    <script>
+        const database = {
+
+            karadelikler: {
+                title: "Kara Delikler",
+                description: "Uzay-zamanın en ekstrem bölgelerini keşfet.",
+
+                overview: "Kara delikler, kütleçekiminin aşırı güçlü olduğu uzay bölgeleridir. Olay ufku adı verilen sınırın içinden ışık bile kaçamaz. Kütlelerine göre yıldız kütleli ve süper kütleli gibi farklı türleri bulunur.",
+
+                overviewImage: "https://assets.science.nasa.gov/dynamicimage/assets/science/missions/webb/outreach/migrated/2017/STScI-01H8PJ6083PCF4KJ1AYKVVRX8Q.png?fit=clip&h=2000&w=2000",
+
+                objects: [
+                    {
+                        name: "TON 618",
+                        image: "https://upload.wikimedia.org/wikipedia/commons/c/c8/Ton618.png",
+                        short: "Devasa kütleli bir kara delik adayı.",
+                        info: "TON 618, çok uzak bir kuasarın merkezinde bulunan olağanüstü büyük bir kara delik adayıdır. Kütlesi yaklaşık 66 milyar Güneş kütlesi olarak tahmin edilir. Bu değer ölçümlere bağlıdır. Kuasarın parlaklığı, merkezindeki kara deliğin çevresindeki maddenin enerji yaymasından kaynaklanır."
+                    },
+                    {
+                        name: "Sagittarius A*",
+                        image: "https://nsf-gov-resources.nsf.gov/styles/hero_small/s3/2023-04/eso2208-eht-mwh.jpg.webp?itok=vGDlC_xP",
+                        short: "Samanyolu'nun merkezindeki kara delik.",
+                        info: "Sagittarius A*, Samanyolu Galaksisi'nin merkezinde bulunur. Yaklaşık 4 milyon Güneş kütlesine sahiptir. Çevresindeki yıldızların hareketleri incelenerek varlığı ve kütlesi belirlenmiştir. 2022 yılında Event Horizon Telescope tarafından görüntüsü yayımlanmıştır."
+                    },
+                    {
+                        name: "M87*",
+                        image: "https://assets.science.nasa.gov/dynamicimage/assets/science/missions/hubble/releases/2023/04/STScI-01GXS1RDZPMF1FNAX24T26HRGN.tif?w=1200",
+                        short: "İlk kara delik görüntüsünün elde edildiği sistem.",
+                        info: "M87*, Messier 87 galaksisinin merkezindeki süper kütleli kara deliktir. 2019 yılında Event Horizon Telescope iş birliği tarafından kara deliğin gölgesini gösteren ilk görüntü yayımlanmıştır."
+                    }
+                ]
+            },
+
+            notron: {
+                title: "Nötron Yıldızları",
+                description: "Evrendeki en yoğun yıldız kalıntılarından bazılarını keşfet.",
+
+                overview: "Nötron yıldızları, büyük kütleli yıldızların çekirdeklerinin çökmesiyle oluşabilen çok yoğun gök cisimleridir. Yaklaşık 20-25 kilometre çapında olabilirler. Bazıları çok hızlı döner ve pulsar olarak gözlemlenir.",
+
+                overviewImage: "https://chandra.harvard.edu/photo/2013/vela/vela_lg.jpg",
+
+                objects: [
+                    {
+                        name: "Vela Pulsar",
+                        image: "https://chandra.harvard.edu/photo/2013/vela/vela_lg.jpg",
+                        short: "Genç ve hızlı dönen bir pulsar.",
+                        info: "Vela Pulsar, Vela takımyıldızı yönünde bulunan genç bir nötron yıldızıdır. Saniyede yaklaşık 11 kez döner. Düzenli elektromanyetik sinyaller gönderdiği için pulsar olarak sınıflandırılır."
+                    },
+                    {
+                        name: "Crab Pulsar",
+                        image: "https://assets.science.nasa.gov/dynamicimage/assets/science/missions/hubble/releases/2016/07/STScI-01EVVGSFPFDGVVEPD7BV4AJ9D6.tif?w=1200",
+                        short: "Yengeç Bulutsusu'nun merkezindeki pulsar.",
+                        info: "Crab Pulsar, 1054 yılında gözlemlenen süpernova patlamasının kalıntısı olan Yengeç Bulutsusu'nun merkezinde bulunur. Saniyede yaklaşık 30 kez döner."
+                    },
+                    {
+                        name: "Magnetarlar",
+                        image: "https://upload.wikimedia.org/wikipedia/commons/8/87/SGR_1806-20_108536main_NeutronStar-Print1.jpg",
+                        short: "Olağanüstü güçlü manyetik alanlara sahip yıldızlar.",
+                        info: "Magnetarlar, çok güçlü manyetik alanlara sahip nötron yıldızlarıdır. Bazıları X-ışını ve gama ışını patlamaları gerçekleştirir. SGR 1806-20 ünlü magnetar örneklerinden biridir."
+                    }
+                ]
+            },
+
+            galaksiler: {
+                title: "Galaksiler",
+                description: "Kozmosun devasa yıldız sistemlerini keşfet.",
+
+                overview: "Galaksiler; yıldızlar, gaz, toz, gezegenler ve karanlık maddeden oluşan devasa kütleçekimsel sistemlerdir. Sarmal, eliptik ve düzensiz gibi farklı şekilleri bulunur.",
+
+                overviewImage: "https://d2pn8kiwq2w21t.cloudfront.net/original_images/jpegPIA04921.jpg",
+
+                objects: [
+                    {
+                        name: "Samanyolu",
+                        image: "https://assets.science.nasa.gov/dynamicimage/assets/science/missions/webb/outreach/migrated/2017/STScI-01H8PJ6083PCF4KJ1AYKVVRX8Q.png?fit=clip&h=2000&w=2000",
+                        short: "İçinde yaşadığımız galaksi.",
+                        info: "Samanyolu, Güneş Sistemi'nin bulunduğu çubuklu sarmal galaksidir. Yüz milyarlarca yıldız içerdiği tahmin edilmektedir."
+                    },
+                    {
+                        name: "Andromeda",
+                        image: "https://d2pn8kiwq2w21t.cloudfront.net/original_images/jpegPIA04921.jpg",
+                        short: "Samanyolu'nun büyük komşusu.",
+                        info: "Andromeda Galaksisi, yaklaşık 2,5 milyon ışık yılı uzaklıktadır. Yerel Grup'un en büyük galaksisidir."
+                    },
+                    {
+                        name: "Sombrero Galaksisi",
+                        image: "https://assets.science.nasa.gov/dynamicimage/assets/science/missions/hubble/galaxies/spiral/STScI-01EVT1FE98G6AWBYKRCJWYVBDE.png?fit=clip&h=960&w=2000",
+                        short: "Şapka benzeri görünümüyle tanınan galaksi.",
+                        info: "Sombrero Galaksisi, parlak merkezi ve belirgin toz şeridiyle tanınır. Dünya'dan yaklaşık 30 milyon ışık yılı uzaklıktadır."
+                    }
+                ]
+            },
+
+            otegezegenler: {
+                title: "Ötegezegenler",
+                description: "Güneş Sistemi dışındaki dünyalara yolculuk yap.",
+
+                overview: "Ötegezegenler, Güneş dışındaki yıldızların çevresinde dolanan gezegenlerdir. Kayalık, gaz devi veya buz devi olabilirler. Bilim insanları bazı atmosferlerinde yaşamla ilişkili olabilecek kimyasal izleri araştırıyor.",
+
+                overviewImage: "https://cdn.eso.org/images/large/eso1629e.jpg",
+
+                objects: [
+                    {
+                        name: "Proxima Centauri b",
+                        image: "https://cdn.eso.org/images/large/eso1629e.jpg",
+                        short: "Güneş'e en yakın yıldızın gezegeni.",
+                        info: "Proxima Centauri b, Güneş'e en yakın yıldız olan Proxima Centauri'nin çevresinde dolanır. Yıldızının yaşanabilir bölgesinde bulunabilir ancak yüzey koşulları ve atmosferi hakkında kesin bilgilerimiz yoktur."
+                    },
+                    {
+                        name: "TRAPPIST-1e",
+                        image: "https://cdn.eso.org/images/large/eso1629e.jpg",
+                        short: "TRAPPIST-1 sistemindeki kayalık gezegen.",
+                        info: "TRAPPIST-1e, yaklaşık 40 ışık yılı uzaklıktaki bir yıldızın çevresinde dolanır. Kayalık bir gezegen olduğu düşünülür ve atmosferi araştırılmaktadır."
+                    },
+                    {
+                        name: "51 Pegasi b",
+                        image: "https://cdn.eso.org/images/large/eso1517a.jpg",
+                        short: "Tarihi bir ötegezegen keşfi.",
+                        info: "51 Pegasi b, 1995 yılında keşfedilen ve Güneş benzeri bir yıldızın çevresinde bulunduğu doğrulanan ilk ötegezegendir. Sıcak Jüpiter türündedir."
+                    }
+                ]
+            }
+        };
+
+        const params = new URLSearchParams(window.location.search);
+        const category = database[params.get("konu")];
+
+        const grid = document.getElementById("objectGrid");
+        const detail = document.getElementById("objectDetail");
+
+        if (category) {
+
+            document.title = category.title + " | Galaxy Explorer";
+
+            document.getElementById("categoryTitle").textContent = category.title;
+            document.getElementById("categoryDescription").textContent = category.description;
+
+            document.getElementById("overviewTitle").textContent =
+                category.title + " Nedir?";
+
+            document.getElementById("overviewText").textContent =
+                category.overview;
+
+            document.getElementById("overviewImage").src =
+                category.overviewImage;
+
+            category.objects.forEach(object => {
+
+                const card = document.createElement("button");
+                card.className = "object-card";
+
+                const img = document.createElement("img");
+                img.src = object.image;
+                img.alt = object.name;
+                img.loading = "lazy";
+
+                const content = document.createElement("div");
+                content.className = "object-card-content";
+
+                const heading = document.createElement("h3");
+                heading.textContent = object.name;
+
+                const paragraph = document.createElement("p");
+                paragraph.textContent = object.short;
+
+                const label = document.createElement("span");
+                label.textContent = "İNCELE →";
+
+                content.append(heading, paragraph, label);
+                card.append(img, content);
+
+                card.addEventListener("click", () => {
+
+                    document.getElementById("objectTitle").textContent =
+                        object.name;
+
+                    document.getElementById("objectImage").src =
+                        object.image;
+
+                    document.getElementById("objectImage").alt =
+                        object.name;
+
+                    document.getElementById("objectDescription").textContent =
+                        object.info;
+
+                    detail.classList.add("active");
+
+                    detail.scrollIntoView({
+                        behavior: "smooth",
+                        block: "center"
+                    });
+                });
+
+                grid.appendChild(card);
+            });
+
+        } else {
+
+            document.getElementById("categoryTitle").textContent =
+                "Konu Bulunamadı";
+
+            document.getElementById("categoryDescription").textContent =
+                "Ana sayfaya dönüp başka bir kategori seçebilirsin.";
+        }
+
+        document.getElementById("closeDetail").addEventListener("click", () => {
+            detail.classList.remove("active");
+        });
+    </script>
+
+</body>
+</html>

@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GALAXY EXPLORER | Beyond The Universe</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+    <canvas id="spaceCanvas"></canvas>
+
+    <nav class="navbar">
+        <a href="index.html" class="logo">GALAXY<span>EXPLORER</span></a>
+
+        <div class="nav-links">
+            <a href="#home">Ana Sayfa</a>
+            <a href="#discover">Keşfet</a>
+            <a href="#about">Hakkında</a>
+        </div>
+
+        <button id="themeButton">☾</button>
+    </nav>
+
+    <header class="hero" id="home">
+
+        <div class="hero-content">
+            <div class="badge">
+                <span class="live-dot"></span>
+                BİLİMİN SINIRLARININ ÖTESİNDE
+            </div>
+
+            <h1>
+                Beyond The<br>
+                <span>Universe.</span>
+            </h1>
+
+            <p>
+                Evrenin en büyük gizemlerini keşfet.
+                Milyarlarca galaksi, akıl almaz gök cisimleri
+                ve henüz çözülememiş kozmik sırlar seni bekliyor.
+            </p>
+
+            <div class="hero-buttons">
+                <a href="#discover" class="main-button">
+                    Evreni Keşfet →
+                </a>
+
+                <a href="#about" class="secondary-button">
+                    Hakkımızda
+                </a>
+            </div>
+
+            <div class="hero-stats">
+                <div>
+                    <strong>2T+</strong>
+                    <span>Galaksi tahmini</span>
+                </div>
+
+                <div>
+                    <strong>13.8B</strong>
+                    <span>Yıllık evren</span>
+                </div>
+
+                <div>
+                    <strong>∞</strong>
+                    <span>Keşfedilecek sır</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="galaxy-area">
+            <div class="galaxy-glow"></div>
+
+            <svg class="galaxy" viewBox="0 0 600 600"
+                 role="img" aria-label="Parlak sarmal galaksi modeli">
+
+                <defs>
+                    <radialGradient id="core">
+                        <stop offset="0%" stop-color="#ffffff"/>
+                        <stop offset="12%" stop-color="#fff0c9"/>
+                        <stop offset="35%" stop-color="#ffb7ed"/>
+                        <stop offset="70%" stop-color="#9860ff"/>
+                        <stop offset="100%" stop-color="#29134f" stop-opacity="0"/>
+                    </radialGradient>
+
+                    <linearGradient id="arm" x1="0" y1="0" x2="1" y2="1">
+                        <stop stop-color="#fff1d0" stop-opacity=".9"/>
+                        <stop offset=".35" stop-color="#d49aff" stop-opacity=".8"/>
+                        <stop offset="1" stop-color="#7544e8" stop-opacity="0"/>
+                    </linearGradient>
+
+                    <filter id="blur">
+                        <feGaussianBlur stdDeviation="10"/>
+                    </filter>
+                </defs>
+
+                <circle cx="300" cy="300" r="230"
+                        fill="#8654ff" opacity=".12" filter="url(#blur)"/>
+
+                <g fill="none" stroke="url(#arm)" stroke-linecap="round">
+                    <path d="M300 300 C390 270 430 170 340 120 C210 50 90 190 160 330 C230 470 430 460 475 320"
+                          stroke-width="38" opacity=".65" filter="url(#blur)"/>
+
+                    <path d="M300 300 C390 270 430 170 340 120 C210 50 90 190 160 330 C230 470 430 460 475 320"
+                          stroke-width="13" opacity=".8"/>
+
+                    <path d="M300 300 C210 330 170 430 260 480 C390 550 510 410 440 270 C370 130 170 140 125 280"
+                          stroke-width="35" opacity=".5" filter="url(#blur)"/>
+
+                    <path d="M300 300 C210 330 170 430 260 480 C390 550 510 410 440 270 C370 130 170 140 125 280"
+                          stroke-width="12" opacity=".75"/>
+                </g>
+
+                <circle cx="300" cy="300" r="85"
+                        fill="url(#core)" filter="url(#blur)"/>
+
+                <circle cx="300" cy="300" r="35"
+                        fill="url(#core)"/>
+
+                <g fill="white">
+                    <circle cx="160" cy="180" r="3"/>
+                    <circle cx="420" cy="180" r="2"/>
+                    <circle cx="455" cy="350" r="3"/>
+                    <circle cx="190" cy="420" r="2"/>
+                    <circle cx="360" cy="440" r="3"/>
+                    <circle cx="240" cy="130" r="2"/>
+                    <circle cx="115" cy="300" r="2"/>
+                    <circle cx="490" cy="260" r="2"/>
+                </g>
+            </svg>
+
+            <div class="galaxy-label">
+                <span></span> SPIRAL GALAXY
+            </div>
+        </div>
+
+        <div class="scroll-indicator">
+            SCROLL TO EXPLORE ↓
+        </div>
+
+    </header>
+
+    <section class="discover" id="discover">
+
+        <div class="section-heading">
+            <span class="eyebrow">KOZMİK ARŞİV</span>
+            <h2>Evreni <span>Keşfet.</span></h2>
+            <p>Bir konu seç ve kozmik yolculuğuna başla.</p>
+        </div>
+
+        <div class="search-wrapper">
+            <span>⌕</span>
+            <input id="searchInput" type="text"
+                   placeholder="Kara delik, pulsar, galaksi...">
+        </div>
+
+        <div class="cards">
+
+            <a href="detay.html?konu=karadelikler" class="card">
+                <div class="card-icon">◉</div>
+                <span class="card-number">01 / COSMOS</span>
+                <h3>Kara Delikler</h3>
+                <p>Işığın bile kaçamadığı uzay-zaman bölgeleri.</p>
+                <span class="card-link">İNCELE ↗</span>
+            </a>
+
+            <a href="detay.html?konu=notron" class="card">
+                <div class="card-icon">✦</div>
+                <span class="card-number">02 / STELLAR</span>
+                <h3>Nötron Yıldızları</h3>
+                <p>Evrenin en yoğun yıldız kalıntılarından bazıları.</p>
+                <span class="card-link">İNCELE ↗</span>
+            </a>
+
+            <a href="detay.html?konu=galaksiler" class="card">
+                <div class="card-icon">✧</div>
+                <span class="card-number">03 / GALACTIC</span>
+                <h3>Galaksiler</h3>
+                <p>Milyarlarca yıldızdan oluşan devasa sistemler.</p>
+                <span class="card-link">İNCELE ↗</span>
+            </a>
+
+            <a href="detay.html?konu=otegezegenler" class="card">
+                <div class="card-icon">◎</div>
+                <span class="card-number">04 / EXOPLANET</span>
+                <h3>Ötegezegenler</h3>
+                <p>Güneş Sistemi dışındaki uzak dünyalar.</p>
+                <span class="card-link">İNCELE ↗</span>
+            </a>
+
+        </div>
+
+        <p id="noResults">Aradığın konu bulunamadı.</p>
+
+    </section>
+
+    <section class="about" id="about">
+        <span class="eyebrow">OUR MISSION</span>
+        <h2>Merakın <span>Ötesinde.</span></h2>
+
+        <p>
+            Galaxy Explorer, astronomi ve uzay bilimine ilgi duyan
+            herkes için hazırlanmış bir keşif platformudur.
+            Çünkü evrenin en güzel yanı, henüz bilmediğimiz şeylerdir.
+        </p>
+    </section>
+
+    <footer>
+        <h2>GALAXY<span>EXPLORER</span></h2>
+        <p>THE UNIVERSE IS WAITING.</p>
+        <small>© 2026 Galaxy Explorer</small>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
